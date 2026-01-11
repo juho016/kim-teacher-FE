@@ -1,7 +1,9 @@
 import React from 'react';
-import Header from '../components/layout/Header';
+import Header from '../components/layout/HeaderPublic';
 import HeroSection from '../components/home/HeroSection';
 import FeatureGrid from '../components/home/FeatureGrid';
+import { useNavigate } from "react-router-dom";
+
 
 const StepsSection = () => {
   const steps = [
@@ -28,16 +30,22 @@ const StepsSection = () => {
   );
 };
 
-const CtaSection = () => {
+const CtaSection = ({ onStart }) => {
   return (
     <section className="cta-section">
-      <h2 className="cta-title">지금 바로 김선생을 만나고,<br />최고의 학습 파트너를 경험해보세요.</h2>
-      <button className="btn btn-primary btn-large">무료로 시작하기</button>
+      <h2 className="cta-title">
+        지금 바로 김선생을 만나고,<br />최고의 학습 파트너를 경험해보세요.
+      </h2>
+      <button className="btn btn-primary btn-large" onClick={onStart}>
+        무료로 시작하기
+      </button>
     </section>
   );
 };
 
+
 const HomePage = () => {
+  const navigate = useNavigate();
   return (
     <div className="page-container">
       <div className="main-card">
@@ -46,7 +54,7 @@ const HomePage = () => {
           <HeroSection />
           <FeatureGrid />
           <StepsSection />
-          <CtaSection />
+           <CtaSection onStart={() => navigate("/home-login")} />
         </main>
       </div>
     </div>

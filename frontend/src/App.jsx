@@ -1,11 +1,19 @@
-import React from 'react';
-import HomePage from './pages/HomePage.jsx';
-import './App.css';
+import React from "react";
+import { Routes, Route, Navigate } from "react-router-dom";
+import HomePage from "./pages/HomePage.jsx";
+import LoginHomePage from "./pages/LoginHomePage.jsx";
+import CourseListPage from "./pages/CourseListPage.jsx";
+import CourseDetailPage from "./pages/CourseDetailPage.jsx";
+import "./App.css";
 
-function App() {
+export default function App() {
   return (
-    <HomePage />
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/home-login" element={<LoginHomePage />} />
+      <Route path="/courses" element={<CourseListPage />} />
+      <Route path="/courses/:courseId" element={<CourseDetailPage />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
   );
 }
-
-export default App;

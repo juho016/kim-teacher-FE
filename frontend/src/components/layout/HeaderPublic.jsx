@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Header = () => {
+const HeaderPublic = () => {
   return (
     <header className="header">
       <div className="header-logo">김선생</div>
@@ -12,4 +12,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default HeaderPublic;
