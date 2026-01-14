@@ -13,7 +13,7 @@ export default function HeaderAuthed() {
         <NavLink to="/home-login" className={({ isActive }) => isActive ? "tab active" : "tab"}>
           홈
         </NavLink>
-        <NavLink to="/study" className={({ isActive }) => isActive ? "tab active" : "tab"}>
+        <NavLink to="/pdf-upload" className={({ isActive }) => isActive ? "tab active" : "tab"}>
           AI 학습방
         </NavLink>
         <NavLink to="/mypage" className={({ isActive }) => isActive ? "tab active" : "tab"}>
