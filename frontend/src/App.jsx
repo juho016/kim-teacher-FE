@@ -5,6 +5,8 @@ import LoginHomePage from "./pages/LoginHomePage.jsx";
 import CourseListPage from "./pages/CourseListPage.jsx";
 import CourseDetailPage from "./pages/CourseDetailPage.jsx";
 import PdfUploadPage from "./pages/PdfUploadPage.jsx";
+import PdfAnalysisResultPage from "./pages/PdfAnalysisResultPage.jsx";
+import ConceptExtractionPage from "./pages/ConceptExtractionPage.jsx";
 import "./App.css";
 
 export default function App() {
@@ -15,6 +17,8 @@ export default function App() {
       <Route path="/courses" element={<CourseListPage />} />
       <Route path="/courses/:courseId" element={<CourseDetailPage />} />
       <Route path="/pdf-upload" element={<PdfUploadPage />} />
+      <Route path="/pdf-analysis" element={<PdfAnalysisResultPage />} />
+      <Route path="/concept" element={<ConceptExtractionPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

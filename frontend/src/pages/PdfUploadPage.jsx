@@ -1,7 +1,14 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import './PdfUploadPage.css';
 
 export default function PdfUploadPage() {
+  const navigate = useNavigate();
+
+  const handleAnalysis = () => {
+    navigate('/pdf-analysis');
+  };
+
   return (
     <div className="pdf-upload-page">
       <div className="upload-container">
@@ -21,9 +28,9 @@ export default function PdfUploadPage() {
         </div>
 
         <div className="action-buttons">
-          <button className="btn btn-action">개념 추출</button>
-          <button className="btn btn-action">Q&A 생성</button>
-          <button className="btn btn-action">퀴즈 생성</button>
+          <button className="btn btn-action" onClick={handleAnalysis}>개념 추출</button>
+          <button className="btn btn-action" onClick={handleAnalysis}>Q&A 생성</button>
+          <button className="btn btn-action" onClick={handleAnalysis}>퀴즈 생성</button>
         </div>
       </div>
     </div>
