@@ -13,7 +13,7 @@ const HeroSection = () => {
       </div>
       <div className="hero-image-container">
         <div className="hero-image-placeholder">
-          이미지 영역
+            <img src="/src/assets/home-image.png" />
         </div>
       </div>
     </section>

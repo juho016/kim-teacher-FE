@@ -10,7 +10,7 @@ export default function HeaderAuthed() {
       </div>
 
       <nav className="tabs">
-        <NavLink to="/home-login" className={({ isActive }) => isActive ? "tab active" : "tab"}>
+        <NavLink to="/user-home" className={({ isActive }) => isActive ? "tab active" : "tab"}>
           홈
         </NavLink>
         <NavLink to="/pdf-upload" className={({ isActive }) => isActive ? "tab active" : "tab"}>

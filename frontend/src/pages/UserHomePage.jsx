@@ -8,7 +8,7 @@ const recentCourses = [
   { id: "algo", title: "알고리즘", last: "마지막 학습: 2일 전", img: "/images/algo.png" },
 ];
 
-export default function LoginHomePage() {
+export default function UserHomePage() {
   const navigate = useNavigate();
 
   return (
@@ -18,7 +18,7 @@ export default function LoginHomePage() {
 
         <main className="content">
           <section className="hero">
-            <h1 className="hero-title">홍길동님, 오늘도 화이팅!</h1>
+            <h1 className="hero-title">신규유저님, 오늘도 화이팅!</h1>
             <p className="hero-sub">
               새로운 학습을 시작하거나, 기존 학습을 이어가세요.
             </p>

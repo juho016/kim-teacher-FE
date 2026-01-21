@@ -54,7 +54,7 @@ const HomePage = () => {
           <HeroSection />
           <FeatureGrid />
           <StepsSection />
-           <CtaSection onStart={() => navigate("/home-login")} />
+           <CtaSection onStart={() => navigate("/login-page")} />
         </main>
       </div>
     </div>
