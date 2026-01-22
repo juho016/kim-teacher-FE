@@ -1,24 +1,42 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function HeaderAuthed() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const isActive = (path) => location.pathname.startsWith(path);
+
   return (
     <header className="header-authed">
       <div className="header-left">
-        <div className="logo-badge">✱</div>
+        <div className="logo-badge">*</div>
         <div className="header-logo">김선생</div>
       </div>
 
       <nav className="tabs">
-        <NavLink to="/home-login" className={({ isActive }) => isActive ? "tab active" : "tab"}>
+        <button
+          className={`tab ${isActive("/home-login") ? "active" : ""}`}
+          onClick={() => navigate("/home-login")}
+          type="button"
+        >
           홈
-        </NavLink>
-        <NavLink to="/study" className={({ isActive }) => isActive ? "tab active" : "tab"}>
+        </button>
+
+        <button
+          className={`tab ${isActive("/ai-room") ? "active" : ""}`}
+          onClick={() => navigate("/ai-room")}
+          type="button"
+        >
           AI 학습방
-        </NavLink>
-        <NavLink to="/mypage" className={({ isActive }) => isActive ? "tab active" : "tab"}>
+        </button>
+
+        <button
+          className={`tab ${isActive("/mypage") ? "active" : ""}`}
+          onClick={() => navigate("/mypage")}
+          type="button"
+        >
           마이페이지
-        </NavLink>
+        </button>
       </nav>
     </header>
   );

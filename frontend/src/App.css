@@ -327,7 +327,7 @@ body {
   padding: 8px 16px;
   border-radius: 999px;
   text-decoration: none;
-  color: #9a9a9a;
+  color: #222;
   font-weight: 700;
   font-size: 14px;
 }
@@ -336,6 +336,15 @@ body {
   background: #2f6fed;
   color: #fff;
 }
+.tab:hover {
+  border-color: #222;        
+}
+
+.tab {
+  border: 1px solid #dcdcdc; 
+  background: #fff;
+}
+
 
 /*  hero section  */
 .hero-title {
@@ -586,3 +595,156 @@ body {
   display: grid;
   place-items: center;
 }
+
+/* ===== AI 학습방 목록 ===== */
+.airoom-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  margin-bottom:14px;
+}
+.airoom-title{ margin:0; font-size:16px; font-weight:800; }
+.airoom-create{ border-radius:12px; padding:10px 14px; }
+
+.airoom-list{ display:flex; flex-direction:column; gap:14px; }
+
+.airoom-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  border:1px solid #e8e8e8;
+  border-radius:12px;
+  background:#fff;
+  padding:10px 12px;
+}
+.airoom-item-main{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  border:none;
+  background:transparent;
+  cursor:pointer;
+  width:100%;
+  text-align:left;
+}
+.airoom-icon{
+  width:28px; height:28px;
+  display:grid; place-items:center;
+  border-radius:10px;
+  background:#eef4ff;
+}
+.airoom-item-text{ font-weight:700; color:#444; }
+
+.airoom-trash{
+  border:none;
+  background:transparent;
+  cursor:pointer;
+  font-size:16px;
+  opacity:0.75;
+}
+.airoom-trash:hover{ opacity:1; }
+
+/* ===== AI 학습방 상세(좌/우 분할) ===== */
+.airoom-detail-top{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:12px;
+}
+.airoom-detail-title{ margin:0; font-size:18px; font-weight:800; }
+
+.airoom-split{
+  display:grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap:18px;
+  align-items:start;
+}
+
+.airoom-left{ }
+.airoom-right{
+  border-left:1px solid #eee;
+  padding-left:16px;
+  min-height: 520px;
+}
+
+.airoom-topic{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin: 6px 0 10px;
+}
+.airoom-label{ font-size:12px; color:#666; font-weight:700; }
+.airoom-input{
+  flex:1;
+  border:1px solid #e8e8e8;
+  border-radius:10px;
+  padding:10px 12px;
+  outline:none;
+}
+
+.airoom-video{
+  border:1px solid #e8e8e8;
+  border-radius:12px;
+  background:#111;
+  overflow:hidden;
+}
+.airoom-video-inner{
+  height: 360px;
+  display:grid;
+  place-items:center;
+}
+.airoom-video-text{ color:#cfcfcf; font-weight:700; }
+
+.airoom-chatbar{
+  display:flex;
+  gap:10px;
+  margin-top:12px;
+}
+.airoom-chatinput{
+  flex:1;
+  border:1px solid #e8e8e8;
+  border-radius:10px;
+  padding:10px 12px;
+  outline:none;
+}
+.airoom-send{ width:84px; border-radius:10px; }
+
+.airoom-right-title{
+  font-weight:800;
+  margin: 4px 0 12px;
+}
+.airoom-chatlog{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  max-height: 520px;
+  overflow:auto;
+  padding-right:6px;
+}
+.airoom-bubble{
+  border:1px solid #e8e8e8;
+  border-radius:12px;
+  padding:10px 12px;
+  font-size:13px;
+  line-height:1.4;
+  background:#fff;
+}
+.airoom-bubble.user{
+  border-color:#d7e4ff;
+  background:#f3f7ff;
+}
+
+.airoom-debug{
+  margin-top:10px;
+  font-size:11px;
+  color:#aaa;
+}
+
+/* 반응형 */
+@media (max-width: 900px){
+  .airoom-split{ grid-template-columns: 1fr; }
+  .airoom-right{ border-left:none; padding-left:0; border-top:1px solid #eee; padding-top:14px; }
+}
+
