@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import Header from "../components/layout/HeaderAuthed.jsx";
-
+//로그인 후 홈화면
 const recentCourses = [
   { id: "database", title: "데이터베이스", last: "마지막 학습: 2일 전", img: "/images/db.png" },
   { id: "computer-arch", title: "컴퓨터구조", last: "마지막 학습: 2일 전", img: "/images/arch.png" },
@@ -24,7 +24,8 @@ export default function LoginHomePage() {
             </p>
 
             <div className="hero-actions">
-              <button className="btn btn-primary">
+              <button className="btn btn-primary"
+              onClick={() => navigate("/pdf-upload")}>
                 새로운 학습 시작하기
               </button>
               <button className="btn btn-secondary" onClick={() => navigate("/courses")}>

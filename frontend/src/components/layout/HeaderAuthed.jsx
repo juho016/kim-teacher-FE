@@ -20,7 +20,6 @@ export default function HeaderAuthed() {
           type="button"
         >
           홈
-
         </button>
 
         <button
