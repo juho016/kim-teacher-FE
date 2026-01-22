@@ -7,6 +7,9 @@ import CourseDetailPage from "./pages/CourseDetailPage.jsx";
 import AiRoomListPage from "./pages/AiRoomListPage.jsx";
 import AiRoomPage from "./pages/AiRoomPage.jsx";
 
+import PdfUploadPage from "./pages/PdfUploadPage.jsx";
+import PdfAnalysisResultPage from "./pages/PdfAnalysisResultPage.jsx";
+import ConceptExtractionPage from "./pages/ConceptExtractionPage.jsx";
 import "./App.css";
 
 export default function App() {
@@ -16,6 +19,9 @@ export default function App() {
       <Route path="/home-login" element={<LoginHomePage />} />
       <Route path="/courses" element={<CourseListPage />} />
       <Route path="/courses/:courseId" element={<CourseDetailPage />} />
+      <Route path="/pdf-upload" element={<PdfUploadPage />} />
+      <Route path="/pdf-analysis" element={<PdfAnalysisResultPage />} />
+      <Route path="/concept" element={<ConceptExtractionPage />} />
       <Route path="/ai-room" element={<AiRoomListPage />} />
       <Route path="/ai-room/:roomId" element={<AiRoomPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
