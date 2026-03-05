@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import './PdfAnalysisResultPage.css';
+import '../PdfAnalysisResultPage.css';
 
 /**
  * [LearningStatusDetail]
@@ -129,7 +129,7 @@ export default function LearningStatusDetail() {
         </div>
 
         {/* Right Panel: 교안 구조 분석 (스크롤 영역) */}
-        <div className="panel structure-panel">
+        <div className="panel structure-panel" style={{ width: '600px', flex: 'none' }}>
           <div className="structure-header">
             <Star className="star-icon" />
             <h2 className="structure-title">교안 구조 분석</h2>

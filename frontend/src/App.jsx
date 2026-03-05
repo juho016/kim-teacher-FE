@@ -9,6 +9,10 @@ import PdfAnalysisResultPage from "./pages/PdfAnalysisResultPage.jsx";
 import ConceptExtractionPage from "./pages/ConceptExtractionPage.jsx";
 import "./App.css";
 import LoginPage from "./pages/LoginPage.jsx";
+import MyPage from "./pages/mypage/MyPage.jsx";
+import MyStatus from "./pages/mypage/MyStatus.jsx";
+import LearningStatusDetail from "./pages/mypage/LearningStatusDetail.jsx";
+
 
 export default function App() {
   return (
@@ -22,6 +26,10 @@ export default function App() {
       <Route path="/concept" element={<ConceptExtractionPage />} />
       <Route path="*" element={<Navigate to="/" replace />} />
       <Route path="/login-page" element={<LoginPage />} />
+        <Route path="/mypage" element={<MyPage />} />
+        <Route path="/learning-status" element={<MyStatus />} />
+        <Route path="/status-detail" element={<LearningStatusDetail />} />
+
     </Routes>
   );
 }
