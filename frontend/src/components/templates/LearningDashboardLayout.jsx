@@ -90,7 +90,7 @@ export default function LearningDashboardLayout({
           </div>
         </div>
         <div className="header-right">
-          <button className="btn-back-home" onClick={() => navigate('/')}>
+          <button className="btn-back-home" onClick={() => navigate(`/learning-room?pdf_id=${pdfId}`)}>
             <HomeIcon />
             <span>학습실로 돌아가기</span>
           </button>

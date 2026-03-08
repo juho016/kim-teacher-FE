@@ -25,8 +25,8 @@ const LoginPage = () => {
     e.preventDefault();
 
     try {
-      // 주호님의 로컬 백엔드 주소로 설정
-      const API_URL = 'http://127.0.0.1:8000/login';
+      // 주호님의 로컬 백엔드 주소로 설정 -> vite에서 이미 proxy 설정 있어서 자동으로 연결됨
+      const API_URL = '/api/login';
 
       const response = await fetch(API_URL, {
         method: 'POST',
