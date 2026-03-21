@@ -72,6 +72,7 @@ export default function LearningDashboardLayout({
   tips = "학습 팁이 여기에 표시됩니다.",
   aiGuideText = "AI가 학습 내용을 분석했습니다.",
   aiGuideColor = "blue",
+  backTo = "/",
   children
 }) {
   const navigate = useNavigate();
@@ -90,8 +91,7 @@ export default function LearningDashboardLayout({
           </div>
         </div>
         <div className="header-right">
-          <button className="btn-back-home" onClick={() => navigate(`/learning-room?pdf_id=${pdfId}`)}>
-            <HomeIcon />
+          <button className="btn-back-home" onClick={() => navigate(backTo)}>
             <span>학습실로 돌아가기</span>
           </button>
         </div>

@@ -205,8 +205,11 @@ export default function LearningRoomPage() {
       title: '퀴즈/시험',
       description: '학습한 개념을 점검할 수 있는 문제를 생성합니다',
       emptyText: '개념 학습 후 퀴즈 기능으로 이해도를 점검해보세요',
-      buttonText: '퀴즈 준비하기',
-      onAction: () => navigate(`/quiz-exam?pdf_id=${pdfId}`),
+      buttonText: '퀴즈 시작',
+      onAction: () =>
+      navigate(
+        `/quiz-exam?pdf_id=${pdfId}&file_name=${encodeURIComponent(fileNameFromQuery)}`
+      ),
       theme: 'quiz',
     },
   ], [pdfId, conceptCount, loadingConcepts, navigate]);
