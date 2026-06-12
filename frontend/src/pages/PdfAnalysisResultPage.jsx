@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import './PdfAnalysisResultPage.css';
 
-// SVG Icons
+// --- SVG Icons ---
 const CheckCircle = ({ className }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={className}>
     <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
@@ -54,10 +54,115 @@ const ArrowRight = ({ className }) => (
   </svg>
 );
 
+
+// --- Data Processing Functions ---
+function sortConcepts(list = []) {
+  return [...list].sort((a, b) => {
+    const levelA = a.hierarchy_level ?? 0;
+    const levelB = b.hierarchy_level ?? 0;
+    if (levelA !== levelB) return levelA - levelB;
+
+    const orderA = a.order_index ?? 0;
+    const orderB = b.order_index ?? 0;
+    if (orderA !== orderB) return orderA - orderB;
+
+    return (a.start_page ?? 0) - (b.start_page ?? 0);
+  });
+}
+
+function buildConceptTree(flatConcepts = []) {
+  const sorted = sortConcepts(flatConcepts);
+  const nodeMap = new Map();
+
+  sorted.forEach((concept) => {
+    nodeMap.set(concept.concept_id, { ...concept, children: [] });
+  });
+
+  const roots = [];
+
+  sorted.forEach((concept) => {
+    const node = nodeMap.get(concept.concept_id);
+    const parentId = concept.parent_concept_id;
+
+    if (parentId && nodeMap.has(parentId)) {
+      nodeMap.get(parentId).children.push(node);
+    } else {
+      roots.push(node);
+    }
+  });
+
+  const deepSort = (nodes) => {
+    nodes.sort((a, b) => {
+      const orderA = a.order_index ?? 0;
+      const orderB = b.order_index ?? 0;
+      if (orderA !== orderB) return orderA - orderB;
+      return (a.start_page ?? 0) - (b.start_page ?? 0);
+    });
+    nodes.forEach((node) => deepSort(node.children));
+    return nodes;
+  };
+
+  return deepSort(roots);
+}
+
+
+// --- 🌟 Rendering Component (Refactored for Clean UI) ---
+function renderConceptNode(node, depth = 0, rootIndex = null) {
+  const isRoot = depth === 0;
+  const hasChildren = node.children && node.children.length > 0;
+
+  // 페이지 표시 (시작과 끝이 같으면 하나만 표시, 다르면 ~로 표시)
+  const pageText = node.start_page === node.end_page
+    ? `[${node.start_page}p]`
+    : `[${node.start_page}p ~ ${node.end_page}p]`;
+
+  return (
+    <div
+      key={node.concept_id}
+      // 뎁스에 따라 좌측 마진(padding-left)을 주어 계층을 시각적으로 구분합니다.
+      style={{ marginLeft: `${depth * 20}px`, marginTop: '8px' }}
+      className="concept-node-wrapper"
+    >
+      {/* 노드 본체 */}
+      <div
+        className={`concept-item ${isRoot ? 'concept-root' : 'concept-child'}`}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          padding: '10px 14px',
+          backgroundColor: isRoot ? '#f8f9fa' : '#ffffff',
+          border: isRoot ? '1px solid #e9ecef' : 'none',
+          borderLeft: isRoot ? '4px solid #4a90e2' : '2px solid #dee2e6',
+          borderRadius: '6px',
+          fontWeight: isRoot ? '600' : '400',
+          color: '#333'
+        }}
+      >
+        <span style={{ marginRight: '8px', color: '#868e96', fontSize: '0.9em' }}>
+          {isRoot ? `${rootIndex}.` : '└'}
+        </span>
+        <span style={{ flexGrow: 1 }}>{node.title}</span>
+        <span style={{ fontSize: '0.85em', color: '#adb5bd', marginLeft: '10px' }}>
+          {pageText}
+        </span>
+      </div>
+
+      {/* 자식 노드가 있다면 재귀적으로 아래에 렌더링 */}
+      {hasChildren && (
+        <div className="concept-children-container">
+          {node.children.map((child) => renderConceptNode(child, depth + 1))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+
 export default function PdfAnalysisResultPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const pdfId = searchParams.get('pdf_id');
+  const fileName = searchParams.get('file_name') || '분석 문서';
 
   const [concepts, setConcepts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -77,14 +182,11 @@ export default function PdfAnalysisResultPage() {
 
       for (let i = 0; i < maxTries; i++) {
         try {
-          const res = await fetch(`/api/pdf/${pdfId}/concepts`);
+          const res = await fetch(`http://127.0.0.1:8000/pdf/${pdfId}/concepts`); // API 경로 수정 (CORS 고려)
           const data = await res.json();
 
           if (res.ok && data.concepts && data.concepts.length > 0) {
-            const sortedConcepts = [...data.concepts].sort(
-              (a, b) => a.order_index - b.order_index
-            );
-            setConcepts(sortedConcepts);
+            setConcepts(data.concepts);
             setMessage('분석이 완료되었습니다.');
             setLoading(false);
             return;
@@ -93,7 +195,7 @@ export default function PdfAnalysisResultPage() {
           console.error('개념 조회 실패:', err);
         }
 
-        await sleep(2000);
+        await sleep(3000); // 3초 간격 폴링
       }
 
       setMessage('분석은 시작되었지만 아직 개념이 생성되지 않았습니다. 잠시 후 다시 시도해주세요.');
@@ -102,7 +204,7 @@ export default function PdfAnalysisResultPage() {
 
     const startAnalysis = async () => {
       try {
-        const res = await fetch(`/api/pdf/${pdfId}/structure`, {
+        const res = await fetch(`http://127.0.0.1:8000/pdf/${pdfId}/structure`, {
           method: 'POST',
         });
         const data = await res.json();
@@ -111,7 +213,7 @@ export default function PdfAnalysisResultPage() {
           throw new Error(data.detail || '구조 분석 시작 실패');
         }
 
-        setMessage(data.message || '분석 시작됨');
+        setMessage(data.message || '분석 중입니다 (약 15~30초 소요)...');
         await pollConcepts();
       } catch (err) {
         console.error(err);
@@ -123,14 +225,25 @@ export default function PdfAnalysisResultPage() {
     startAnalysis();
   }, [pdfId]);
 
+  const treeConcepts = useMemo(() => buildConceptTree(concepts), [concepts]);
+
+  const totalPages = useMemo(() => {
+    if (!concepts.length) return 0;
+    return Math.max(...concepts.map((concept) => concept.end_page || 0));
+  }, [concepts]);
+
+  const rootCount = useMemo(() => treeConcepts.length, [treeConcepts]);
+
   return (
     <div className="analysis-page">
       <div className="analysis-container">
+
+        {/* --- 왼쪽: 요약 패널 --- */}
         <div className="panel summary-panel">
           <div className="summary-header">
             <CheckCircle className="success-icon" />
             <h1 className="summary-title">분석 완료!</h1>
-            <p className="file-name">{pdfId}</p>
+            <p className="file-name">{fileName}</p>
           </div>
 
           <div className="type-box">
@@ -140,16 +253,16 @@ export default function PdfAnalysisResultPage() {
 
           <div className="stats-grid">
             <div className="stat-item">
-              <span className="stat-label">개념</span>
+              <span className="stat-label">추출 노드</span>
               <span className="stat-value blue">{concepts.length}</span>
             </div>
             <div className="stat-item">
-              <span className="stat-label">상태</span>
-              <span className="stat-value green">{loading ? '분석중' : '완료'}</span>
+              <span className="stat-label">대주제</span>
+              <span className="stat-value green">{rootCount}</span>
             </div>
             <div className="stat-item">
-              <span className="stat-label">AI</span>
-              <span className="stat-value pink">Gemini</span>
+              <span className="stat-label">페이지</span>
+              <span className="stat-value pink">{totalPages}</span>
             </div>
           </div>
 
@@ -167,8 +280,9 @@ export default function PdfAnalysisResultPage() {
             <div className="list-item">
               <div className="item-left">
                 <Lightbulb className="item-icon" />
-                <span>Q&A 생성</span>
+                <span>Q&amp;A 생성</span>
               </div>
+              {!loading && concepts.length > 0 && <Check className="check-icon" />}
             </div>
 
             <div className="list-item">
@@ -176,12 +290,13 @@ export default function PdfAnalysisResultPage() {
                 <GraduationCap className="item-icon" />
                 <span>학습 퀴즈</span>
               </div>
+              {!loading && concepts.length > 0 && <Check className="check-icon" />}
             </div>
           </div>
 
           <button
             className="btn-start-learning"
-            onClick={() => navigate(`/learning-room?pdf_id=${pdfId}&file_name=${encodeURIComponent('Assignment2.pdf')}`)}
+            onClick={() => navigate(`/learning-room?pdf_id=${pdfId}&file_name=${encodeURIComponent(fileName)}`)}
             disabled={concepts.length === 0}
           >
             <span>학습 시작하기</span>
@@ -189,34 +304,30 @@ export default function PdfAnalysisResultPage() {
           </button>
         </div>
 
+        {/* --- 오른쪽: 교안 구조 트리 패널 --- */}
         <div className="panel structure-panel">
           <div className="structure-header">
             <Star className="star-icon" />
-            <h2 className="structure-title">교안 구조 분석</h2>
+            <h2 className="structure-title">AI 교안 구조 분석 결과</h2>
           </div>
 
-          <div className="structure-content">
+          <div className="structure-content" style={{ maxHeight: '600px', overflowY: 'auto', paddingRight: '10px' }}>
             {loading ? (
-              <p>AI가 교안을 분석 중입니다...</p>
+              <div style={{ textAlign: 'center', padding: '40px', color: '#868e96' }}>
+                <p>AI가 문맥을 파악하여 구조를 잡고 있습니다...</p>
+                <p style={{ fontSize: '0.85em', marginTop: '10px' }}>PDF 크기에 따라 10초 ~ 30초 정도 소요됩니다.</p>
+              </div>
             ) : concepts.length === 0 ? (
               <p>아직 생성된 개념이 없습니다.</p>
             ) : (
-              concepts.map((concept) => (
-                <div key={concept.concept_id} className="chapter-item">
-                  <div className="chapter-title">
-                    {concept.order_index}. {concept.title} ({concept.start_page}p ~ {concept.end_page}p)
-                  </div>
-                  <div className="chapter-children">
-                    <div className="child-item">
-                      <Lightbulb className="child-icon concept" />
-                      <span className="child-text">{concept.description}</span>
-                    </div>
-                  </div>
-                </div>
-              ))
+              // 🌟 최상위(Root) 노드들부터 순서대로 렌더링 시작
+              treeConcepts.map((rootNode, index) =>
+                renderConceptNode(rootNode, 0, index + 1)
+              )
             )}
           </div>
         </div>
+
       </div>
     </div>
   );

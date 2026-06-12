@@ -18,6 +18,8 @@ import WeaknessAnalysisPage from "./pages/WeaknessAnalysisPage.jsx";
 import CornellNotePage from "./pages/CornellNotePage.jsx";
 import WrongAnswerNotePage from "./pages/WrongAnswerNotePage.jsx";
 import QuizExamPage from "./pages/QuizExamPage.jsx";
+import AiPrelearningPage from "./pages/AiPrelearningPage.jsx";
+import CommunityPage from "./pages/CommunityPage.jsx";
 
 
 export default function App() {
@@ -30,18 +32,23 @@ export default function App() {
       <Route path="/pdf-upload" element={<PdfUploadPage />} />
       <Route path="/pdf-analysis" element={<PdfAnalysisResultPage />} />
       <Route path="/concept" element={<ConceptExtractionPage />} />
-      <Route path="*" element={<Navigate to="/" replace />} />
       <Route path="/login-page" element={<LoginPage />} />
-        <Route path="/mypage" element={<MyPage />} />
-        <Route path="/learning-status" element={<MyStatus />} />
-        <Route path="/status-detail" element={<LearningStatusDetail />} />
-        <Route path="/qa" element={<QAGenerationPage />} />
-        <Route path="/learning-room" element={<LearningRoomPage />} />
-        <Route path="/weakness" element={<WeaknessAnalysisPage />} />
-        <Route path="/cornell" element={<CornellNotePage />} />
-        <Route path="/wrong-note" element={<WrongAnswerNotePage />} />
-        <Route path="/quiz-exam" element={<QuizExamPage />} />
+      <Route path="/mypage" element={<MyPage />} />
+      <Route path="/learning-status" element={<MyStatus />} />
+      <Route path="/mypage/status/detail" element={<LearningStatusDetail />} />
+      <Route path="/status-detail" element={<LearningStatusDetail />} />
+      <Route path="/qa" element={<QAGenerationPage />} />
+      <Route path="/learning-room" element={<LearningRoomPage />} />
+      <Route path="/weakness" element={<WeaknessAnalysisPage />} />
+      <Route path="/cornell" element={<CornellNotePage />} />
+      <Route path="/wrong-note" element={<WrongAnswerNotePage />} />
+      <Route path="/quiz-exam" element={<QuizExamPage />} />
+      
+      {/* 새로 추가된 메뉴 라우트 */}
+      <Route path="/ai-prelearning" element={<AiPrelearningPage />} />
+      <Route path="/community" element={<CommunityPage />} />
 
+      <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
 }

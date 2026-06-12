@@ -16,6 +16,12 @@ export default function HeaderAuthed() {
         <NavLink to="/pdf-upload" className={({ isActive }) => isActive ? "tab active" : "tab"}>
           AI 학습방
         </NavLink>
+        <NavLink to="/ai-prelearning" className={({ isActive }) => isActive ? "tab active" : "tab"}>
+          10분 예습
+        </NavLink>
+        <NavLink to="/community" className={({ isActive }) => isActive ? "tab active" : "tab"}>
+          학습 커뮤니티
+        </NavLink>
         <NavLink to="/mypage" className={({ isActive }) => isActive ? "tab active" : "tab"}>
           마이페이지
         </NavLink>
